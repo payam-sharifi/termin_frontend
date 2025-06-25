@@ -171,4 +171,36 @@
 
 		});
 
+	// Contact Form Submission
+	$('#contact-form').on('submit', function(event) {
+		event.preventDefault();
+
+		var formData = {
+			'name': $('input[name=name]').val(),
+			'email': $('input[name=email]').val(),
+			'message': $('textarea[name=message]').val()
+		};
+
+		$.ajax({
+			type: 'POST',
+			url: '/send-message',
+			data: formData,
+			dataType: 'json',
+			encode: true
+		})
+		.done(function(data) {
+			console.log(data);
+			if (data.success) {
+				alert('Nachricht erfolgreich gesendet!');
+				$('#contact-form')[0].reset();
+			} else {
+				alert('Etwas ist schief gelaufen.');
+			}
+		})
+		.fail(function(data) {
+			console.log(data);
+			alert('Etwas ist schief gelaufen.');
+		});
+	});
+
 })(jQuery);

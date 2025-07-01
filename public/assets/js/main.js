@@ -203,4 +203,48 @@
 		});
 	});
 
+	// Accordion Toggle Logic
+	$('.toggle-trigger').on('click', function() {
+		var $this = $(this);
+		var $content = $this.next('.toggle-content');
+		var $parentLi = $this.closest('li');
+		var $parentColumn = $this.closest('.services-column');
+		var $grid = $('.services-grid');
+		var transitionDuration = 300; // This must match your CSS transition duration
+
+		// If the clicked item is already active, close it and reset the view
+		if ($parentLi.hasClass('active-service')) {
+			$content.slideUp(400, function() {
+				// After content is up, remove focus to animate back
+				$grid.removeClass('focused');
+				$parentColumn.removeClass('active-column');
+				$parentLi.removeClass('active-service');
+
+				// After the de-centering animation, show the other items
+				setTimeout(function() {
+					$('.services-list > li').not($parentLi).fadeIn(400);
+				}, transitionDuration);
+			});
+		} else {
+			// Close any other open items
+			$('.toggle-content').slideUp(400);
+			$('.services-list > li').removeClass('active-service');
+			$('.services-column').removeClass('active-column');
+
+			$parentLi.addClass('active-service');
+
+			// Hide other items
+			$('.services-list > li').not($parentLi).fadeOut(400).promise().done(function() {
+				// After fade out, add classes to trigger centering animation
+				$parentColumn.addClass('active-column');
+				$grid.addClass('focused');
+
+				// Wait for centering to finish, then open the content
+				setTimeout(function() {
+					$content.slideDown(400);
+				}, transitionDuration);
+			});
+		}
+	});
+
 })(jQuery);

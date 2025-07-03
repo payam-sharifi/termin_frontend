@@ -208,42 +208,26 @@
 		var $this = $(this);
 		var $content = $this.next('.toggle-content');
 		var $parentLi = $this.closest('li');
-		var $parentColumn = $this.closest('.services-column');
-		var $grid = $('.services-grid');
-		var transitionDuration = 300; // This must match your CSS transition duration
+		var $ul = $parentLi.parent();
 
-		// If the clicked item is already active, close it and reset the view
-		if ($parentLi.hasClass('active-service')) {
-			$content.slideUp(400, function() {
-				// After content is up, remove focus to animate back
-				$grid.removeClass('focused');
-				$parentColumn.removeClass('active-column');
-				$parentLi.removeClass('active-service');
-
-				// After the de-centering animation, show the other items
-				setTimeout(function() {
-					$('.services-list > li').not($parentLi).fadeIn(400);
-				}, transitionDuration);
-			});
+		if ($content.is(':visible')) {
+			// If already open, close it
+			$content.slideUp(300);
+			$parentLi.removeClass('focused open active');
+			$ul.removeClass('focus-mode');
+			$ul.children('li').fadeIn(300);
 		} else {
-			// Close any other open items
-			$('.toggle-content').slideUp(400);
-			$('.services-list > li').removeClass('active-service');
-			$('.services-column').removeClass('active-column');
+			// Close all, then open the clicked one
+			$('.toggle-content').slideUp(300);
+			$('.services-list > li').removeClass('focused open active');
+			$ul.removeClass('focus-mode');
+			$ul.children('li').show();
 
-			$parentLi.addClass('active-service');
-
-			// Hide other items
-			$('.services-list > li').not($parentLi).fadeOut(400).promise().done(function() {
-				// After fade out, add classes to trigger centering animation
-				$parentColumn.addClass('active-column');
-				$grid.addClass('focused');
-
-				// Wait for centering to finish, then open the content
-				setTimeout(function() {
-					$content.slideDown(400);
-				}, transitionDuration);
-			});
+			// Hide all other li, center the selected one
+			$ul.addClass('focus-mode');
+			$parentLi.addClass('focused open active');
+			$ul.children('li').not($parentLi).fadeOut(300);
+			$content.slideDown(300);
 		}
 	});
 

@@ -187,7 +187,7 @@ html {
 /* Desktop styles */
 @media (min-width: 768px) {
   html {
-    background-image: url("../../images/eynak2desktop.webp");
+    background-image: url("../../images/vec.jpg");
     background-size: cover; /* Ensure it covers the entire area */
   }
   
@@ -204,8 +204,9 @@ html {
 /* Mobile styles */
 @media (max-width: 767px) {
   html {
-    background-image: url("images/overlay.png"), url("../../images/eynak2.jpg");
+    background-image: url("images/overlay.png"), url("../../images/vec.jpg");
     background-size: auto, cover; /* Prevent zoom on mobile */
+  
     background-repeat: repeat, no-repeat; /* Adjust repeats as needed */
   }
   
